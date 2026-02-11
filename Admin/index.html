@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        (function() {
+            // 1. Check if she is already logged in for this session
+            if (!sessionStorage.getItem("nexa_admin_unlocked")) {
+                
+                // 2. Ask for the PIN (Change "2026" to any secret number she wants)
+                const pin = prompt("Enter Admin PIN to access stock:");
+
+                // 3. Verify
+                if (pin === "7002") { // <--- CHANGE THIS PIN!
+                    // Success! Remember this for as long as the tab is open
+                    sessionStorage.setItem("nexa_admin_unlocked", "true");
+                } else {
+                    // Failed! Send them away instantly
+                    alert("Incorrect PIN. Redirecting to Shop...");
+                    window.location.href = "../index.html"; 
+                }
+            }
+        })();
+    </script>
+    <meta charset="UTF-8">
+    <title>Nexa Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+        /* Mobile Optimizations */
+        body { background-color: #f8f9fa; }
+        .mobile-card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: none;
+        }
+        .size-check-input { display: none; } /* Hide actual checkboxes */
+        .size-check-label {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            transition: 0.2s;
+            background: white;
+            font-weight: 500;
+        }
+        /* When selected, turn black */
+        .size-check-input:checked + .size-check-label {
+            background-color: black;
+            color: white;
+            border-color: black;
+        }
+        .stock-img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="pb-5">
+
+    <nav class="navbar navbar-dark bg-black sticky-top mb-4">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1 fw-bold">NEXA ADMIN</span>
+            <a href="../index.html" class="btn btn-sm btn-outline-light">View Shop</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div class="card mobile-card mb-4">
+            <div class="card-body p-4">
+                <h5 class="fw-bold mb-3">Upload New Stock</h5>
+                <form id="upload-form">
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">PRODUCT IMAGE</label>
+                        <input type="file" id="p-file" class="form-control" accept="image/*" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">NAME</label>
+                        <input type="text" id="p-name" class="form-control form-control-lg" placeholder="e.g. Vintage Wash" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">PRICE (₦)</label>
+                        <input type="number" id="p-price" class="form-control form-control-lg" placeholder="e.g. 15000" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-muted small fw-bold d-block">AVAILABLE SIZES (Tap to select)</label>
+                        <div class="row g-2">
+                            <div class="col-3"><input type="checkbox" id="s-s" value="S" class="size-check-input"><label for="s-s" class="size-check-label">S</label></div>
+                            <div class="col-3"><input type="checkbox" id="s-m" value="M" class="size-check-input"><label for="s-m" class="size-check-label">M</label></div>
+                            <div class="col-3"><input type="checkbox" id="s-l" value="L" class="size-check-input"><label for="s-l" class="size-check-label">L</label></div>
+                            <div class="col-3"><input type="checkbox" id="s-xl" value="XL" class="size-check-input"><label for="s-xl" class="size-check-label">XL</label></div>
+                            <div class="col-4"><input type="checkbox" id="s-30" value="W30" class="size-check-input"><label for="s-30" class="size-check-label">W30</label></div>
+                            <div class="col-4"><input type="checkbox" id="s-32" value="W32" class="size-check-input"><label for="s-32" class="size-check-label">W32</label></div>
+                            <div class="col-4"><input type="checkbox" id="s-34" value="W34" class="size-check-input"><label for="s-34" class="size-check-label">W34</label></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-black w-100 py-3 fw-bold" style="background: black; color: white;" id="upload-btn">
+                        UPLOAD ITEM
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <h6 class="text-muted fw-bold mb-3 ps-1">CURRENT INVENTORY</h6>
+        <div id="stock-list" class="d-flex flex-column gap-3">
+            <div class="text-center py-4 text-muted">Loading stock...</div>
+        </div>
+
+    </div>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body" id="toast-msg">Action successful</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="../assets/js/admin.js"></script>
+</body>
+</html>
