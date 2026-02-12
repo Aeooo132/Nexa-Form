@@ -139,7 +139,7 @@ function updateCartUI() {
 document.addEventListener('triggerCheckout', () => {
     if (cart.length === 0) return alert('Your bag is empty!');
     
-    const phone = "2348130481575"; 
+    const phone = "2348130757325"; 
     
     let msg = `*NEW ORDER - NEXA FORMS* 👖%0A%0AHello! I'd like to purchase:%0A----------------------------%0A`;
     
