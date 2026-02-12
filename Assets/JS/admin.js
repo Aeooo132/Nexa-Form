@@ -1,3 +1,4 @@
+// Ensure this path matches your lowercase folder structure
 import { supabase } from './config.js';
 
 const form = document.getElementById('upload-form');
@@ -28,7 +29,7 @@ async function loadStock() {
 
     data.forEach(item => {
         const stockItem = `
-        <div class="card mobile-card border-0">
+        <div class="card mobile-card border-0 mb-2">
             <div class="card-body p-2 d-flex align-items-center">
                 <img src="${item.image_url}" class="stock-img me-3">
                 <div class="flex-grow-1">
@@ -36,7 +37,7 @@ async function loadStock() {
                     <small class="text-muted">Sizes: ${item.size}</small><br>
                     <small class="fw-bold">₦${item.price.toLocaleString()}</small>
                 </div>
-                <button class="btn btn-sm btn-outline-danger ms-2 delete-btn" data-id="${item.id}" data-img="${item.image_url}">
+                <button class="btn btn-sm btn-outline-danger ms-2 delete-btn" data-id="${item.id}">
                     Delete
                 </button>
             </div>
@@ -55,17 +56,17 @@ async function handleDelete(e) {
     if(!confirm("Are you sure you want to remove this item?")) return;
 
     const id = e.target.dataset.id;
-    const btn = e.target;
-    btn.innerText = "Deleting...";
-    btn.disabled = true;
+    const deleteBtn = e.target;
+    deleteBtn.innerText = "Deleting...";
+    deleteBtn.disabled = true;
 
     // Delete from Database
     const { error } = await supabase.from('products').delete().eq('id', id);
 
     if (error) {
         alert("Error deleting: " + error.message);
-        btn.innerText = "Delete";
-        btn.disabled = false;
+        deleteBtn.innerText = "Delete";
+        deleteBtn.disabled = false;
     } else {
         // Refresh list
         loadStock(); 
@@ -101,15 +102,16 @@ form.addEventListener('submit', async (e) => {
         // Get URL
         const { data: { publicUrl } } = supabase.storage.from('denims').getPublicUrl(fileName);
 
-        // Save to DB (Using the combined sizeString)
+        // Save to DB
         const { error: dbError } = await supabase
             .from('products')
-            .insert([{ name, price, size: sizeString, image_url: publicUrl }]); // Note: size is now the string
+            .insert([{ name, price, size: sizeString, image_url: publicUrl }]); 
         
         if (dbError) throw dbError;
 
         alert('Success! Item added.');
         form.reset();
+        
         // Clear checkboxes manually
         document.querySelectorAll('.size-check-input').forEach(cb => cb.checked = false);
         loadStock(); // Refresh the list below

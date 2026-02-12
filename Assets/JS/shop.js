@@ -83,14 +83,11 @@ function handleAddToCart(e) {
     const name = btn.dataset.name;
     const price = btn.dataset.price;
     
-    // Find the selected size for this specific product
     const sizeInput = document.querySelector(`.size-select-${id}`);
     const selectedSize = sizeInput.value;
 
-    // Add to cart array
     cart.push({ id, name, price, size: selectedSize });
     
-    // Visual Feedback (Button changes text briefly)
     const originalText = btn.innerText;
     btn.innerText = "ADDED ✓";
     btn.classList.replace('btn-dark', 'btn-success');
@@ -101,7 +98,6 @@ function handleAddToCart(e) {
 
     updateCartUI();
     
-    // Open Sidebar
     const bsOffcanvas = new bootstrap.Offcanvas('#cartSidebar');
     bsOffcanvas.show();
 }
@@ -131,7 +127,6 @@ function updateCartUI() {
         </div>
     `).join('');
 
-    // Attach Remove Listeners
     document.querySelectorAll('.remove-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             cart.splice(e.target.dataset.index, 1);
@@ -144,7 +139,6 @@ function updateCartUI() {
 document.addEventListener('triggerCheckout', () => {
     if (cart.length === 0) return alert('Your bag is empty!');
     
-    // REPLACE THIS WITH HER ACTUAL NUMBER (Start with 234, no +)
     const phone = "2348130481575"; 
     
     let msg = `*NEW ORDER - NEXA FORMS* 👖%0A%0AHello! I'd like to purchase:%0A----------------------------%0A`;
